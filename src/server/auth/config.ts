@@ -1,4 +1,5 @@
 import login from "@/services/login/login.service";
+import { Axios, AxiosError } from "axios";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -26,7 +27,6 @@ export const authConfig = {
           email: credentials.email! as string,
           password: credentials.password! as string,
         });
-
         return {
           access_token: res.access_token,
           email: res.user.email,

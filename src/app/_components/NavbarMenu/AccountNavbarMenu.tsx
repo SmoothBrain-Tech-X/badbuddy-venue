@@ -1,5 +1,4 @@
 "use client";
-
 import { ActionIcon, Button, Menu, rem } from "@mantine/core";
 import {
   IconChevronRight,
@@ -7,7 +6,7 @@ import {
   IconSettings,
   IconUserCircle,
 } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function AccountNavbarMenu() {
   const { data } = useSession();
@@ -36,33 +35,16 @@ export default function AccountNavbarMenu() {
               <Menu.Item
                 color="red"
                 leftSection={
-                  <IconSettings style={{ width: rem(14), height: rem(14) }} />
+                  <IconLogout style={{ width: rem(14), height: rem(14) }} />
                 }
+                onClick={() => {
+                    void signOut();
+                }}
               >
-                Settings
+                Sign out
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-          {/* <button className="rounded p-1 hover:bg-gray-100">
-            <IconChevronRight size={16} />
-          </button>
-          <div className="absolute right-0 top-full mt-2 hidden w-48 rounded-md border border-gray-200 bg-white shadow-lg group-hover:block">
-            <div className="py-1">
-              <button className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-gray-100">
-                <IconUserCircle size={14} />
-                Profile
-              </button>
-              <button className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-gray-100">
-                <IconSettings size={14} />
-                Settings
-              </button>
-              <div className="my-1 border-t border-gray-200"></div>
-              <button className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
-                <IconLogout size={14} />
-                Logout
-              </button>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

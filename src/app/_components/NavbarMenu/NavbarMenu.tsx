@@ -16,11 +16,11 @@ interface NavigationItem {
 }
 
 export const navigationItems: NavigationItem[] = [
-  {
-    label: "Dashboard",
-    icon: IconDashboard,
-    link: "/dashboard",
-  },
+//   {
+//     label: "Dashboard",
+//     icon: IconDashboard,
+//     link: "/dashboard",
+//   },
   //   {
   //     label: 'Users',
   //     icon: IconUsers,
