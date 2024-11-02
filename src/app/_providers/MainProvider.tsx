@@ -5,6 +5,7 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { SessionProvider } from "next-auth/react";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 interface Props {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export default function MainProvider({ children }: Props) {
     <SessionProvider>
       <MantineProvider theme={theme}>
         <Notifications position="top-right" />
-        {children}
+        <ModalsProvider>{children}</ModalsProvider>
       </MantineProvider>
       ;
     </SessionProvider>

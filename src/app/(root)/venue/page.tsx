@@ -24,6 +24,7 @@ import {
   IconMapPin,
   IconClock,
   IconDotsVertical,
+  IconTrash,
 } from "@tabler/icons-react";
 import useGetVenue from "@/hooks/venue/useGetVenue";
 import VenueForm from "@/app/(root)/venue/_components/VenueForm/VenueForm";
@@ -40,6 +41,9 @@ import { type CourtSchemaType } from "@/schemas/court/court.schema";
 import { getCourtStatusMap } from "utils/CourtStatusMap";
 import useAddCourt from "@/hooks/court/useAddCourt";
 import useUpdateCourt from "@/hooks/court/useUpdateCourt";
+import useDeleteCourt from "@/hooks/court/useDeleteCourt";
+import { modals } from "@mantine/modals";
+import { ConfirmDeleteModalData } from "@/configs/ModalData/ModalData";
 
 const venue_id = "0c8f9940-99e5-48bf-89ea-da05adfc1d27";
 
@@ -50,6 +54,7 @@ export default function Page() {
   const updateVenue = useUpdateVenue();
   const addCourt = useAddCourt();
   const updateCourt = useUpdateCourt();
+  const deleteCourt = useDeleteCourt();
 
   const [editVenueOpen, setEditVenueOpen] = useState(false);
   const [addCourtOpen, setAddCourtOpen] = useState(false);
@@ -134,6 +139,38 @@ export default function Page() {
         },
       },
     );
+  };
+
+  const onDeleteCourt = (data: CourtSchemaType) => {
+    modals.openConfirmModal({
+      ...ConfirmDeleteModalData,
+      onConfirm: () => {
+        deleteCourt.mutate(
+          {
+            venue_id: venue_id,
+            court_id: data.court_id ?? "",
+          },
+          {
+            onSuccess: () => {
+              notifications.show({
+                ...SuccessNotificationData,
+              });
+              void getVenue.refetch();
+              setEditCourt(null);
+              setEditCourtOpen(false);
+            },
+            onError: (error) => {
+              if (error instanceof AxiosError) {
+                notifications.show({
+                  ...ErrorNotificationData,
+                  message: error.message,
+                });
+              }
+            },
+          },
+        );
+      },
+    });
   };
 
   const renderOverview = () => (
@@ -253,19 +290,18 @@ export default function Page() {
                         >
                           Edit Court
                         </Menu.Item>
-                        {/* <Menu.Item leftSection={<IconSettings size={14} />}>
-                          Court Settings
-                        </Menu.Item>
-                        <Menu.Item leftSection={<IconChartBar size={14} />}>
-                          View Analytics
-                        </Menu.Item>
-                        <Menu.Divider />
                         <Menu.Item
                           color="red"
-                          leftSection={<IconX size={14} />}
+                          onClick={() =>
+                            onDeleteCourt({
+                              ...court,
+                              court_id: court.id,
+                            })
+                          }
+                          leftSection={<IconTrash size={14} />}
                         >
                           Disable Court
-                        </Menu.Item> */}
+                        </Menu.Item>
                       </Menu.Dropdown>
                     </Menu>
                   </Group>
