@@ -1,8 +1,7 @@
 "use client";
 import { createTheme, MantineProvider } from "@mantine/core";
-
+import '@mantine/dates/styles.css';
 import "@mantine/core/styles.css";
-import LayoutProvider from "./LayoutProvider";
 import { SessionProvider } from "next-auth/react";
 
 interface Props {

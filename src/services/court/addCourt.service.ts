@@ -1,20 +1,14 @@
 import _ from "lodash";
-import { axiosAPI } from "utils/axios";
+import { axiosAPIWithoutAuth } from "utils/axios";
 
-interface RootObject {
-  name: string;
-  description: string;
-  price_per_hour: number;
-}
-
-export type LoginProps = {
+export type IAddCourt = {
   venue_id: string;
   password: string;
 };
 
-const addCourt = async (props: LoginProps) => {
+const addCourt = async (props: IAddCourt) => {
   try {
-    const res = await axiosAPI.post<RootObject>(
+    const res = await axiosAPIWithoutAuth.post<object>(
       `/venues/${props.venue_id}/courts`,
       props,
     );

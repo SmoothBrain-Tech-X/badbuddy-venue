@@ -26,7 +26,7 @@ interface User {
 
 const login = async (props: LoginProps) => {
   try {
-    const res = await axiosAPI.post<RootObject>(`/api/users/login`, props);
+    const res = await axiosAPI.post<RootObject>(`/users/login`, props);
     return res.data;
   } catch (error) {
     throw error;

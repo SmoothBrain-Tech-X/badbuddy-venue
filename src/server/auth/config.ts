@@ -1,6 +1,7 @@
 import login from "@/services/login/login.service";
 import { Axios, AxiosError } from "axios";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 
 declare module "next-auth" {
@@ -14,6 +15,14 @@ declare module "next-auth" {
     access_token: string;
   }
 }
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    access_token: string;
+  }
+}
+
 export const authConfig = {
   providers: [
     Credentials({
@@ -23,20 +32,49 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await login({
-          email: credentials.email! as string,
-          password: credentials.password! as string,
-        });
-        return {
-          access_token: res.access_token,
-          email: res.user.email,
-          name: `${res.user.first_name} ${res.user.last_name}`,
-          id: res.user.id,
-          image: res.user.avatar_url,
-        };
+        try {
+          const res = await login({
+            email: credentials.email! as string,
+            password: credentials.password! as string,
+          });
+          return {
+            access_token: res.access_token,
+            email: res.user.email,
+            name: `${res.user.first_name} ${res.user.last_name}`,
+            id: res.user.id,
+            image: res.user.avatar_url,
+          };
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            return null;
+          }
+          throw error;
+        }
       },
     }),
   ],
+  callbacks: {
+    session: (session) => {
+      session.session.user.access_token = session.token.access_token;
+      session.session.user.email = session.token.email ?? "";
+      session.session.user.name = session.token.name;
+      session.session.user.id = session.token.id;
+      session.session.user.image = session.token.image as string;
+      return session.session;
+    },
+    async jwt({ user, token }) {
+      if (user) {
+        return {
+          access_token: user.access_token,
+          email: user.email,
+          name: user.name,
+          id: user.id,
+          image: user.image,
+        } as JWT;
+      }
+      return token;
+    },
+  },
   pages: {
     signIn: "/sign-in",
   },

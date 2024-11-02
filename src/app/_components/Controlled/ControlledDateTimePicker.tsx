@@ -34,13 +34,14 @@ const ControlledDateTimePicker = <T extends FieldValues>(
         return (
           <DatesProvider
             settings={{
-              locale: "th",
-              timezone: "Asia/Bangkok",
+            //   locale: "th",
+            //   timezone: "Asia/Bangkok",
             }}
           >
             <DateTimePicker
               {...props.props}
-              valueFormat="วันddddที่ DD MMMM YYYY HH:mm"
+            //   valueFormat="วันddddที่ DD MMMM YYYY HH:mm"
+              valueFormat="DD MMMM YYYY HH:mm"
               error={error ? error.message : undefined}
               value={value}
               onChange={handleOnChange}
