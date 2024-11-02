@@ -25,7 +25,6 @@ import {
   Avatar,
   Indicator,
   ScrollArea,
-  Alert,
   SegmentedControl,
 } from "@mantine/core";
 import { TimeInput, Calendar } from "@mantine/dates";
@@ -34,21 +33,12 @@ import {
   IconClock,
   IconCheck,
   IconX,
-  IconAlertCircle,
-  IconUserCircle,
   IconCash,
-  IconNotes,
   IconDotsVertical,
   IconEdit,
-  IconTrash,
   IconMessage,
   IconFilter,
-  IconSend,
-  IconPhone,
-  IconMail,
-  IconChevronRight,
   IconRotate,
-  IconBuildingCourt,
   IconCalendarStats,
   IconList,
 } from "@tabler/icons-react";
@@ -60,7 +50,7 @@ const BookingManagement = () => {
   const [viewMode, setViewMode] = useState("day");
 
   // Sample booking data
-  const bookings = [
+  const Reservations = [
     {
       id: "1",
       court: "Court A",
@@ -98,7 +88,7 @@ const BookingManagement = () => {
           <Stack gap={0}>
             <Title order={4}>Booking Calendar</Title>
             <Text size="sm" c="dimmed">
-              Manage court bookings
+              Manage court Reservations
             </Text>
           </Stack>
           <Group>
@@ -124,12 +114,7 @@ const BookingManagement = () => {
           {/* Calendar Navigation */}
           <Grid.Col span={3}>
             <Paper withBorder p="md">
-              <Calendar
-                value={selectedDate}
-                onChange={setSelectedDate}
-                fullWidth
-                size="sm"
-              />
+              <Calendar size="sm" />
 
               <Stack mt="md">
                 <Text fw={500} size="sm">
@@ -206,14 +191,14 @@ const BookingManagement = () => {
     </Stack>
   );
 
-  const renderBookingsList = () => (
+  const renderReservationsList = () => (
     <Stack>
       {/* Filters */}
       <Paper p="md" withBorder>
         <Grid align="flex-end">
           <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
             <TextInput
-              placeholder="Search bookings..."
+              placeholder="Search Reservations..."
               leftSection={<IconFilter size={16} />}
             />
           </Grid.Col>
@@ -253,7 +238,7 @@ const BookingManagement = () => {
         </Grid>
       </Paper>
 
-      {/* Bookings Table */}
+      {/* Reservations Table */}
       <Paper withBorder>
         <Table striped highlightOnHover>
           <Table.Thead>
@@ -268,7 +253,7 @@ const BookingManagement = () => {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {bookings.map((booking) => (
+            {Reservations.map((booking) => (
               <Table.Tr key={booking.id}>
                 <Table.Td>
                   <Group gap="sm">
@@ -363,7 +348,7 @@ const BookingManagement = () => {
         <Grid>
           {[
             {
-              title: "Today's Bookings",
+              title: "Today's Reservations",
               value: "12",
               icon: IconCalendarEvent,
               color: "blue",
@@ -413,7 +398,7 @@ const BookingManagement = () => {
         {/* Main Content */}
         <Tabs
           value={activeTab}
-          onChange={(value) => setActiveTab(value || "calendar")}
+          onChange={(value) => setActiveTab(value ?? "calendar")}
         >
           <Tabs.List>
             <Tabs.Tab
@@ -432,7 +417,7 @@ const BookingManagement = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value="list" pt="md">
-            {renderBookingsList()}
+            {renderReservationsList()}
           </Tabs.Panel>
         </Tabs>
       </Stack>

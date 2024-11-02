@@ -1,6 +1,7 @@
 import {
   type Icon,
   IconBuildingCommunity,
+  IconCalendarEvent,
   IconDashboard,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -31,7 +32,11 @@ export const navigationItems: NavigationItem[] = [
     label: "Venues",
     icon: IconBuildingCommunity,
     link: "/venue",
-    badge: "28",
+  },
+  {
+    label: "Reservation",
+    icon: IconCalendarEvent,
+    link: "/reservation",
   },
   //   {
   //     label: 'Parties',

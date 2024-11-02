@@ -16,7 +16,7 @@ export default function LayoutProvider(props: Props) {
     <AppShell
       header={{ height: 60 }}
       navbar={{
-        width: 300,
+        width: 230,
         breakpoint: "sm",
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}

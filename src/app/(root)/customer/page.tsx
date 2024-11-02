@@ -30,7 +30,7 @@ const CustomerManagement = () => {
             email: 'john@example.com',
             phone: '+66812345678',
             level: 'gold',
-            totalBookings: 45,
+            totalReservations: 45,
             totalSpent: 36000,
             joinDate: '2024-01-15',
             lastBooking: '2024-02-20',
@@ -43,7 +43,7 @@ const CustomerManagement = () => {
             email: 'jane@example.com',
             phone: '+66823456789',
             level: 'silver',
-            totalBookings: 28,
+            totalReservations: 28,
             totalSpent: 22400,
             joinDate: '2024-01-20',
             lastBooking: '2024-02-18',
@@ -126,7 +126,7 @@ const CustomerManagement = () => {
                             <Table.Tr>
                                 <Table.Th>Customer</Table.Th>
                                 <Table.Th>Level</Table.Th>
-                                <Table.Th>Total Bookings</Table.Th>
+                                <Table.Th>Total Reservations</Table.Th>
                                 <Table.Th>Total Spent</Table.Th>
                                 <Table.Th>Last Booking</Table.Th>
                                 <Table.Th>Status</Table.Th>
@@ -150,7 +150,7 @@ const CustomerManagement = () => {
                                             {customerLevels[customer.level].label}
                                         </Badge>
                                     </Table.Td>
-                                    <Table.Td>{customer.totalBookings}</Table.Td>
+                                    <Table.Td>{customer.totalReservations}</Table.Td>
                                     <Table.Td>฿{customer.totalSpent.toLocaleString()}</Table.Td>
                                     <Table.Td>{customer.lastBooking}</Table.Td>
                                     <Table.Td>
@@ -278,8 +278,8 @@ const CustomerManagement = () => {
                                     <Text>{selectedCustomer.joinDate}</Text>
                                 </Group>
                                 <Group justify="space-between">
-                                    <Text>Total Bookings</Text>
-                                    <Text>{selectedCustomer.totalBookings}</Text>
+                                    <Text>Total Reservations</Text>
+                                    <Text>{selectedCustomer.totalReservations}</Text>
                                 </Group>
                                 <Group justify="space-between">
                                     <Text>Total Spent</Text>
@@ -292,7 +292,7 @@ const CustomerManagement = () => {
                     {/* Booking History */}
                     <Grid.Col span={12}>
                         <Paper p="md" withBorder>
-                            <Title order={4} mb="md">Recent Bookings</Title>
+                            <Title order={4} mb="md">Recent Reservations</Title>
                             <Timeline active={1}>
                                 <Timeline.Item
                                     bullet={<IconCalendarEvent size={12} />}
@@ -441,8 +441,8 @@ const CustomerManagement = () => {
                         Are you sure you want to blacklist this customer? This will:
                     </Text>
                     <List size="sm">
-                        <List.Item>Cancel all upcoming bookings</List.Item>
-                        <List.Item>Prevent future bookings</List.Item>
+                        <List.Item>Cancel all upcoming Reservations</List.Item>
+                        <List.Item>Prevent future Reservations</List.Item>
                         <List.Item>Send notification to the customer</List.Item>
                     </List>
                     <TextInput

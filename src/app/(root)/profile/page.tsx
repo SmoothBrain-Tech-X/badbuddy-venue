@@ -356,13 +356,13 @@ const ProfileManagement = () => {
                         <Grid.Col span={6}>
                             <Stack>
                                 <Switch
-                                    label="Auto-confirm bookings"
-                                    description="Automatically confirm bookings when payment is received"
+                                    label="Auto-confirm Reservations"
+                                    description="Automatically confirm Reservations when payment is received"
                                     defaultChecked
                                 />
                                 <Switch
                                     label="Allow cancellations"
-                                    description="Let customers cancel bookings up to 24 hours before"
+                                    description="Let customers cancel Reservations up to 24 hours before"
                                     defaultChecked
                                 />
                                 <Switch

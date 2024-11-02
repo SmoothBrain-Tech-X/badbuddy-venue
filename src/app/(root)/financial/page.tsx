@@ -20,13 +20,13 @@ const FinancialManagement = () => {
 
     // Sample data for charts
     const revenueData = [
-        { date: '2024-02-20', revenue: 12000, bookings: 15 },
-        { date: '2024-02-21', revenue: 15000, bookings: 18 },
-        { date: '2024-02-22', revenue: 10000, bookings: 12 },
-        { date: '2024-02-23', revenue: 18000, bookings: 20 },
-        { date: '2024-02-24', revenue: 20000, bookings: 22 },
-        { date: '2024-02-25', revenue: 16000, bookings: 17 },
-        { date: '2024-02-26', revenue: 14000, bookings: 16 }
+        { date: '2024-02-20', revenue: 12000, Reservations: 15 },
+        { date: '2024-02-21', revenue: 15000, Reservations: 18 },
+        { date: '2024-02-22', revenue: 10000, Reservations: 12 },
+        { date: '2024-02-23', revenue: 18000, Reservations: 20 },
+        { date: '2024-02-24', revenue: 20000, Reservations: 22 },
+        { date: '2024-02-25', revenue: 16000, Reservations: 17 },
+        { date: '2024-02-26', revenue: 14000, Reservations: 16 }
     ];
 
     const courtRevenueData = [
@@ -92,7 +92,7 @@ const FinancialManagement = () => {
                 <Group justify="space-between" mb="lg">
                     <div>
                         <Title order={4}>Revenue Overview</Title>
-                        <Text size="sm" c="dimmed">Daily revenue and bookings</Text>
+                        <Text size="sm" c="dimmed">Daily revenue and Reservations</Text>
                     </div>
                     <Group>
                         <SegmentedControl
@@ -138,9 +138,9 @@ const FinancialManagement = () => {
                             <Line
                                 yAxisId="right"
                                 type="monotone"
-                                dataKey="bookings"
+                                dataKey="Reservations"
                                 stroke="#40c057"
-                                name="Bookings"
+                                name="Reservations"
                             />
                         </LineChart>
                     </ResponsiveContainer>
@@ -301,7 +301,7 @@ const FinancialManagement = () => {
                                                 <Table.Td align="right">฿12,450</Table.Td>
                                             </Table.Tr>
                                             <Table.Tr>
-                                                <Table.Td>Total Bookings</Table.Td>
+                                                <Table.Td>Total Reservations</Table.Td>
                                                 <Table.Td align="right">15</Table.Td>
                                             </Table.Tr>
                                             <Table.Tr>
@@ -371,7 +371,7 @@ const FinancialManagement = () => {
                                                 </Table.Td>
                                             </Table.Tr>
                                             <Table.Tr>
-                                                <Table.Td>Total Bookings</Table.Td>
+                                                <Table.Td>Total Reservations</Table.Td>
                                                 <Table.Td align="right">320</Table.Td>
                                                 <Table.Td align="right">
                                                     <Badge color="green">+12.5%</Badge>
