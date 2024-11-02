@@ -13,3 +13,5 @@ export default async function Layout({
 
   return <LayoutProvider>{children}</LayoutProvider>;
 }
+
+export const dynamic = "force-dynamic";

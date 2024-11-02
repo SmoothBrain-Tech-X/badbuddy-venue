@@ -1,6 +1,8 @@
 
-export default function Page(props: { searchParams : { q: string } }) {
+export default function Page() {
   return (
     <div>Page</div>
   )
 }
+
+export const dynamic = "force-dynamic";

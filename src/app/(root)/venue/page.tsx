@@ -15,127 +15,129 @@ import {
   Badge,
   Table,
   Modal,
-  TextInput,
-  Select,
-  Textarea,
-  FileInput,
-  Switch,
   Menu,
-  Tabs,
 } from "@mantine/core";
 import { format } from "date-fns";
-import { TimeInput } from "@mantine/dates";
 import {
   IconEdit,
   IconPlus,
   IconMapPin,
   IconClock,
-  IconSettings,
-  IconChartBar,
-  IconUsers,
-  IconCalendarEvent,
-  IconBuilding,
   IconDotsVertical,
-  IconX,
 } from "@tabler/icons-react";
 import useGetVenue from "@/hooks/venue/useGetVenue";
 import VenueForm from "@/app/(root)/venue/_components/VenueForm/VenueForm";
+import { type VenueSchemaType } from "@/schemas/venues/venue.schema";
+import useUpdateVenue from "@/hooks/venue/useUpdateVenue";
+import { notifications } from "@mantine/notifications";
+import {
+  ErrorNotificationData,
+  SuccessNotificationData,
+} from "@/configs/NotificationData/NotificationData";
+import { AxiosError } from "axios";
+import CourtForm from "./_components/CourtForm/CourtForm";
+import { type CourtSchemaType } from "@/schemas/court/court.schema";
+import { getCourtStatusMap } from "utils/CourtStatusMap";
+import useAddCourt from "@/hooks/court/useAddCourt";
+import useUpdateCourt from "@/hooks/court/useUpdateCourt";
+
+const venue_id = "0c8f9940-99e5-48bf-89ea-da05adfc1d27";
 
 export default function Page() {
   const getVenue = useGetVenue({
-    venue_id: "0c8f9940-99e5-48bf-89ea-da05adfc1d27",
+    venue_id: venue_id,
   });
-  const [activeTab, setActiveTab] = useState("overview");
+  const updateVenue = useUpdateVenue();
+  const addCourt = useAddCourt();
+  const updateCourt = useUpdateCourt();
+
   const [editVenueOpen, setEditVenueOpen] = useState(false);
   const [addCourtOpen, setAddCourtOpen] = useState(false);
+  const [editCourtOpen, setEditCourtOpen] = useState(false);
 
-  // Sample data
-  const venueStats = [
-    {
-      title: "Today's Bookings",
-      value: "24",
-      change: "+12%",
-      icon: IconCalendarEvent,
-      color: "blue",
-    },
-    {
-      title: "Active Courts",
-      value: "8",
-      change: "0%",
-      icon: IconBuilding,
-      color: "green",
-    },
-    {
-      title: "Total Revenue",
-      value: "฿12,450",
-      change: "+8%",
-      icon: IconChartBar,
-      color: "violet",
-    },
-    {
-      title: "Court Utilization",
-      value: "75%",
-      change: "+5%",
-      icon: IconUsers,
-      color: "orange",
-    },
-  ];
+  const [EditCourt, setEditCourt] = useState<CourtSchemaType | null>(null);
 
-  const courts = [
-    {
-      id: "1",
-      name: "Court A",
-      type: "Indoor",
-      status: "active",
-      price: "400/hr",
-      bookings: 45,
-      revenue: "18,000",
-    },
-    {
-      id: "2",
-      name: "Court B",
-      type: "Indoor",
-      status: "maintenance",
-      price: "400/hr",
-      bookings: 38,
-      revenue: "15,200",
-    },
-  ];
+  const onEditVenue = (data: VenueSchemaType) => {
+    updateVenue.mutate(
+      { venue_id: venue_id, ...data },
+      {
+        onSuccess: () => {
+          notifications.show({
+            ...SuccessNotificationData,
+          });
+          void getVenue.refetch();
+          setEditVenueOpen(false);
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            notifications.show({
+              ...ErrorNotificationData,
+              message: error.message,
+            });
+          }
+        },
+      },
+    );
+  };
+
+  const onAddCourt = (data: CourtSchemaType) => {
+    addCourt.mutate(
+      {
+        venue_id: venue_id,
+        ...data,
+      },
+      {
+        onSuccess: () => {
+          notifications.show({
+            ...SuccessNotificationData,
+          });
+          void getVenue.refetch();
+          setAddCourtOpen(false);
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            notifications.show({
+              ...ErrorNotificationData,
+              message: error.message,
+            });
+          }
+        },
+      },
+    );
+  };
+
+  const onEditCourt = (data: CourtSchemaType) => {
+    if (!EditCourt) return;
+    updateCourt.mutate(
+      {
+        venue_id: venue_id,
+        court_id: data.court_id ?? "",
+        status: data.status ?? "",
+        ...data,
+      },
+      {
+        onSuccess: () => {
+          notifications.show({
+            ...SuccessNotificationData,
+          });
+          void getVenue.refetch();
+          setEditCourt(null);
+          setEditCourtOpen(false);
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            notifications.show({
+              ...ErrorNotificationData,
+              message: error.message,
+            });
+          }
+        },
+      },
+    );
+  };
 
   const renderOverview = () => (
     <Stack>
-      {/* Stats Cards */}
-      {/* <Grid>
-        {venueStats.map((stat, index) => (
-          <Grid.Col span={{ base: 12, sm: 6, md: 3 }} key={index}>
-            <Card p="md" radius="md" withBorder>
-              <Group justify="space-between" mb="xs">
-                <ThemeIcon
-                  size="lg"
-                  radius="md"
-                  variant="light"
-                  color={stat.color}
-                >
-                  <stat.icon size={20} />
-                </ThemeIcon>
-                <Badge
-                  variant="light"
-                  color={stat.change.startsWith("+") ? "green" : "red"}
-                >
-                  {stat.change}
-                </Badge>
-              </Group>
-              <Text fw={700} size="xl">
-                {stat.value}
-              </Text>
-              <Text size="sm" c="dimmed">
-                {stat.title}
-              </Text>
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid> */}
-
       {/* Venue Information */}
       <Paper p="md" withBorder>
         <Group justify="space-between" mb="md">
@@ -224,9 +226,8 @@ export default function Page() {
                 <Table.Td>
                   <Text fw={500}>{court.name}</Text>
                 </Table.Td>
-                <Table.Td>{court.status}</Table.Td>
                 <Table.Td>
-                  <Badge color={court.status === "active" ? "green" : "orange"}>
+                  <Badge color={getCourtStatusMap(court.status)?.color}>
                     {court.status}
                   </Badge>
                 </Table.Td>
@@ -240,10 +241,19 @@ export default function Page() {
                         </ActionIcon>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Item leftSection={<IconEdit size={14} />}>
+                        <Menu.Item
+                          onClick={() => {
+                            setEditCourt({
+                              ...court,
+                              court_id: court.id,
+                            });
+                            setEditCourtOpen(true);
+                          }}
+                          leftSection={<IconEdit size={14} />}
+                        >
                           Edit Court
                         </Menu.Item>
-                        <Menu.Item leftSection={<IconSettings size={14} />}>
+                        {/* <Menu.Item leftSection={<IconSettings size={14} />}>
                           Court Settings
                         </Menu.Item>
                         <Menu.Item leftSection={<IconChartBar size={14} />}>
@@ -255,7 +265,7 @@ export default function Page() {
                           leftSection={<IconX size={14} />}
                         >
                           Disable Court
-                        </Menu.Item>
+                        </Menu.Item> */}
                       </Menu.Dropdown>
                     </Menu>
                   </Group>
@@ -268,69 +278,9 @@ export default function Page() {
     </Stack>
   );
 
-  const renderSettings = () => (
-    <Stack>
-      <Paper p="md" withBorder>
-        <Title order={4} mb="md">
-          Venue Settings
-        </Title>
-        <Grid>
-          <Grid.Col span={6}>
-            <Stack>
-              <TextInput label="Venue Name" defaultValue="Sports Complex A" />
-              <Textarea
-                label="Description"
-                defaultValue="Professional badminton facility with 8 courts"
-              />
-              <TimeInput label="Opening Time" defaultValue="07:00" />
-              <TimeInput label="Closing Time" defaultValue="22:00" />
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Stack>
-              <TextInput label="Phone Number" defaultValue="+66812345678" />
-              <TextInput
-                label="Email"
-                defaultValue="contact@sportscomplex.com"
-              />
-              <Switch label="Allow Online Bookings" defaultChecked />
-              <Switch label="Auto-confirm Bookings" defaultChecked />
-            </Stack>
-          </Grid.Col>
-        </Grid>
-      </Paper>
-    </Stack>
-  );
-
   return (
     <Container fluid>
-      <Stack>
-        {/* Header */}
-        <Paper p="md" withBorder>
-          <Group justify="space-between">
-            <div>
-              <Title order={2}>Venue Management</Title>
-              <Text c="dimmed">{getVenue.data?.name}</Text>
-            </div>
-          </Group>
-        </Paper>
-
-        {/* Main Content */}
-        <Tabs value={activeTab} onChange={setActiveTab}>
-          <Tabs.List>
-            <Tabs.Tab value="overview">Overview</Tabs.Tab>
-            <Tabs.Tab value="settings">Settings</Tabs.Tab>
-          </Tabs.List>
-
-          <Tabs.Panel value="overview" pt="md">
-            {renderOverview()}
-          </Tabs.Panel>
-
-          <Tabs.Panel value="settings" pt="md">
-            {renderSettings()}
-          </Tabs.Panel>
-        </Tabs>
-      </Stack>
+      {renderOverview()}
 
       {/* Edit Venue Modal */}
       <Modal
@@ -342,12 +292,12 @@ export default function Page() {
         {getVenue.data && (
           <VenueForm
             type="edit"
+            onFinish={onEditVenue}
             data={{
               ...getVenue.data,
               name: getVenue.data?.name ?? "",
               description: getVenue.data?.description ?? "",
               address: getVenue.data?.address ?? "",
-              location: getVenue.data?.location ?? "",
               phone: getVenue.data?.phone ?? "",
               email: getVenue.data?.email ?? "",
               image_urls: getVenue.data?.image_urls ?? "",
@@ -359,33 +309,32 @@ export default function Page() {
         )}
       </Modal>
 
-      {/* Add Court Modal */}
       <Modal
         opened={addCourtOpen}
         onClose={() => setAddCourtOpen(false)}
         title="Add New Court"
       >
-        <Stack>
-          <TextInput label="Court Name" required />
-          <Select
-            label="Court Type"
-            data={[
-              { value: "indoor", label: "Indoor" },
-              { value: "outdoor", label: "Outdoor" },
-            ]}
-            required
-          />
-          <TextInput label="Price per Hour" type="number" required />
-          <Textarea label="Description" />
-          <FileInput label="Court Photos" multiple />
-          <Group justify="flex-end">
-            <Button variant="light" onClick={() => setAddCourtOpen(false)}>
-              Cancel
-            </Button>
-            <Button>Add Court</Button>
-          </Group>
-        </Stack>
+        <CourtForm
+          isLoading={addCourt.isPending}
+          onFinish={onAddCourt}
+          type="create"
+        />
+      </Modal>
+
+      <Modal
+        opened={editCourtOpen}
+        onClose={() => setEditCourtOpen(false)}
+        title="Edit Court Details"
+      >
+        <CourtForm
+          isLoading={updateCourt.isPending}
+          onFinish={onEditCourt}
+          type="edit"
+          data={EditCourt ?? undefined}
+        />
       </Modal>
     </Container>
   );
 }
+
+export const dynamic = "force-dynamic";

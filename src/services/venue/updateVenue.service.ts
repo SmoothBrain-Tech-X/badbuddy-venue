@@ -2,10 +2,10 @@ import _ from "lodash";
 import { axiosAPIWithoutAuth } from "utils/axios";
 
 export type TUpdateVenue = {
+  venue_id: string;
   name: string;
   description: string;
   address: string;
-  location: string;
   phone: string;
   email: string;
   open_time: string;
@@ -16,7 +16,11 @@ export type TUpdateVenue = {
 
 const updateVenue = async (props: TUpdateVenue) => {
   try {
-    const res = await axiosAPIWithoutAuth.put<object>(`/venues`, props);
+    const payload = _.omit(props, ["venue_id"]);
+    const res = await axiosAPIWithoutAuth.put<object>(
+      `/venues/${props.venue_id}`,
+      payload,
+    );
     return res.data;
   } catch (error) {
     throw error;

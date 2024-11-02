@@ -51,3 +51,5 @@ export default function Page(props: { searchParams: { error: string } }) {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";

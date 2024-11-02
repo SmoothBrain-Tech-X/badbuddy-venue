@@ -3,3 +3,5 @@ export default function Page() {
     <div>Page</div>
   )
 }
+
+export const dynamic = "force-dynamic";

@@ -3,7 +3,9 @@ import { axiosAPIWithoutAuth } from "utils/axios";
 
 export type IAddCourt = {
   venue_id: string;
-  password: string;
+  name: string;
+  description: string;
+  price_per_hour: number;
 };
 
 const addCourt = async (props: IAddCourt) => {

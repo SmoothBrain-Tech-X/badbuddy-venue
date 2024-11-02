@@ -8,15 +8,15 @@ import ControlledInputText from "../../../../_components/Controlled/ControlledIn
 import { Button } from "@mantine/core";
 import { useEffect } from "react";
 import ControlledInputTextarea from "../../../../_components/Controlled/ControlledInputTextarea";
-import ControlledDateTimePicker from "../../../../_components/Controlled/ControlledDateTimePicker";
 import ControlledSelect from "../../../../_components/Controlled/ControlledSelect";
-import { venueStatus } from "utils/boqStatusMap";
 import ControlledTimeInput from "../../../../_components/Controlled/ControlledTimeInput";
+import { venueStatus } from "utils/VenueStatusMap";
 
 interface Props {
   type: "create" | "edit";
   onFinish?: (data: VenueSchemaType) => void;
   data?: VenueSchemaType;
+  isLoading?: boolean;
 }
 
 export default function VenueForm(props: Props) {
@@ -45,7 +45,6 @@ export default function VenueForm(props: Props) {
       setValue("description", props.data.description);
       setValue("email", props.data.email);
       setValue("image_urls", props.data.image_urls);
-      setValue("location", props.data.location);
       setValue("open_time", props.data.open_time);
       setValue("status", props.data.status);
     }
@@ -146,7 +145,7 @@ export default function VenueForm(props: Props) {
             })) ?? [],
         }}
       />
-      <Button type="submit">
+      <Button loading={props.isLoading} type="submit">
         {props.type === "create" ? "Create" : "Save"}
       </Button>
     </form>
