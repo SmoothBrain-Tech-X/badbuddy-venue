@@ -235,8 +235,6 @@ export default function Page() {
                 {getVenue.isPending ? (
                   <Group gap="xs">
                     <Skeleton height={20} width={"100%"} maw={500} />
-                    <Skeleton height={20} width={"100%"} maw={500} />
-                    <Skeleton height={20} width={"100%"} maw={500} />
                   </Group>
                 ) : (
                   <Group gap="xs">
