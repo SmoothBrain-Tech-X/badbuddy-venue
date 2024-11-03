@@ -216,15 +216,38 @@ export default function Page() {
         <Grid>
           <Grid.Col span={6}>
             <Stack gap="xs">
-              <Group gap="xs">
-                <IconMapPin size={16} />
-                <Text fw={500}>Location</Text>
-              </Group>
-              {getVenue.isPending ? (
-                <Skeleton height={20} width={150} />
-              ) : (
-                <Text size="sm">{getVenue.data?.address}</Text>
-              )}
+              <Stack gap="xs">
+                <Group gap="xs">
+                  <IconMapPin size={16} />
+                  <Text fw={500}>Location</Text>
+                </Group>
+                {getVenue.isPending ? (
+                  <Skeleton height={20} width={150} />
+                ) : (
+                  <Text size="sm">{getVenue.data?.address}</Text>
+                )}
+              </Stack>
+              <Stack gap="xs">
+                <Group gap="xs">
+                  <IconMapPin size={16} />
+                  <Text fw={500}>Facilities</Text>
+                </Group>
+                {getVenue.isPending ? (
+                  <Group gap="xs">
+                    <Skeleton height={20} width={"100%"} maw={500} />
+                    <Skeleton height={20} width={"100%"} maw={500} />
+                    <Skeleton height={20} width={"100%"} maw={500} />
+                  </Group>
+                ) : (
+                  <Group gap="xs">
+                    {getVenue.data?.facilities.map((facility, index) => (
+                      <Badge variant="light" key={index}>
+                        {facility.name}
+                      </Badge>
+                    ))}
+                  </Group>
+                )}
+              </Stack>
             </Stack>
           </Grid.Col>
           <Grid.Col span={6}>
