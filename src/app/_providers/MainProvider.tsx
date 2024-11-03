@@ -1,5 +1,5 @@
 "use client";
-import { createTheme, MantineProvider } from "@mantine/core";
+import { Badge, Button, createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -11,7 +11,12 @@ interface Props {
   children: React.ReactNode;
 }
 
-const theme = createTheme({});
+const theme = createTheme({
+  fontFamily: "var(--font-sans)",
+  radius: {
+    sm: "0.6rem",
+  },
+});
 
 export default function MainProvider({ children }: Props) {
   return (

@@ -16,8 +16,8 @@ import {
   Table,
   Modal,
   Menu,
+  Skeleton,
 } from "@mantine/core";
-import { format } from "date-fns";
 import {
   IconEdit,
   IconPlus,
@@ -26,6 +26,7 @@ import {
   IconDotsVertical,
   IconTrash,
 } from "@tabler/icons-react";
+import { format } from "date-fns";
 import useGetVenue from "@/hooks/venue/useGetVenue";
 import VenueForm from "@/app/(root)/venue/_components/VenueForm/VenueForm";
 import { type VenueSchemaType } from "@/schemas/venues/venue.schema";
@@ -33,6 +34,7 @@ import useUpdateVenue from "@/hooks/venue/useUpdateVenue";
 import { notifications } from "@mantine/notifications";
 import {
   ErrorNotificationData,
+  LoadingNotificationData,
   SuccessNotificationData,
 } from "@/configs/NotificationData/NotificationData";
 import { AxiosError } from "axios";
@@ -63,19 +65,23 @@ export default function Page() {
   const [EditCourt, setEditCourt] = useState<CourtSchemaType | null>(null);
 
   const onEditVenue = (data: VenueSchemaType) => {
+    const notiKey = notifications.show(LoadingNotificationData);
     updateVenue.mutate(
-      { venue_id: venue_id, ...data },
+      { venue_id: venue_id, status: data.status ?? "", ...data },
       {
         onSuccess: () => {
-          notifications.show({
+          notifications.update({
+            id: notiKey,
             ...SuccessNotificationData,
+            message: "Venue updated successfully",
           });
           void getVenue.refetch();
           setEditVenueOpen(false);
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
-            notifications.show({
+            notifications.update({
+              id: notiKey,
               ...ErrorNotificationData,
               message: error.message,
             });
@@ -86,6 +92,7 @@ export default function Page() {
   };
 
   const onAddCourt = (data: CourtSchemaType) => {
+    const notiKey = notifications.show(LoadingNotificationData);
     addCourt.mutate(
       {
         venue_id: venue_id,
@@ -93,16 +100,19 @@ export default function Page() {
       },
       {
         onSuccess: () => {
-          notifications.show({
+          notifications.update({
             ...SuccessNotificationData,
+            id: notiKey,
+            message: "Court added successfully",
           });
           void getVenue.refetch();
           setAddCourtOpen(false);
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
-            notifications.show({
+            notifications.update({
               ...ErrorNotificationData,
+              id: notiKey,
               message: error.message,
             });
           }
@@ -113,6 +123,7 @@ export default function Page() {
 
   const onEditCourt = (data: CourtSchemaType) => {
     if (!EditCourt) return;
+    const notiKey = notifications.show(LoadingNotificationData);
     updateCourt.mutate(
       {
         venue_id: venue_id,
@@ -122,8 +133,10 @@ export default function Page() {
       },
       {
         onSuccess: () => {
-          notifications.show({
+          notifications.update({
             ...SuccessNotificationData,
+            id: notiKey,
+            message: "Court updated successfully",
           });
           void getVenue.refetch();
           setEditCourt(null);
@@ -131,8 +144,9 @@ export default function Page() {
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
-            notifications.show({
+            notifications.update({
               ...ErrorNotificationData,
+              id: notiKey,
               message: error.message,
             });
           }
@@ -142,6 +156,7 @@ export default function Page() {
   };
 
   const onDeleteCourt = (data: CourtSchemaType) => {
+    const notiKey = notifications.show(LoadingNotificationData);
     modals.openConfirmModal({
       ...ConfirmDeleteModalData,
       onConfirm: () => {
@@ -152,8 +167,10 @@ export default function Page() {
           },
           {
             onSuccess: () => {
-              notifications.show({
+              notifications.update({
                 ...SuccessNotificationData,
+                id: notiKey,
+                message: "Court deleted successfully",
               });
               void getVenue.refetch();
               setEditCourt(null);
@@ -161,8 +178,9 @@ export default function Page() {
             },
             onError: (error) => {
               if (error instanceof AxiosError) {
-                notifications.show({
+                notifications.update({
                   ...ErrorNotificationData,
+                  id: notiKey,
                   message: error.message,
                 });
               }
@@ -175,14 +193,14 @@ export default function Page() {
 
   const renderOverview = () => (
     <Stack>
-      {/* Venue Information */}
       <Paper p="md" withBorder>
         <Group justify="space-between" mb="md">
           <div>
-            <Title order={4}>Venue Information</Title>
-            <Text size="sm" c="dimmed">
-              {getVenue.data?.name}
-            </Text>
+            {getVenue.isPending ? (
+              <Skeleton height={20} width={300} />
+            ) : (
+              <Title order={4}>{getVenue.data?.name}</Title>
+            )}
           </div>
           <Button
             variant="light"
@@ -200,7 +218,11 @@ export default function Page() {
                 <IconMapPin size={16} />
                 <Text fw={500}>Location</Text>
               </Group>
-              <Text size="sm">{getVenue.data?.address}</Text>
+              {getVenue.isPending ? (
+                <Skeleton height={20} width={150} />
+              ) : (
+                <Text size="sm">{getVenue.data?.address}</Text>
+              )}
             </Stack>
           </Grid.Col>
           <Grid.Col span={6}>
@@ -209,23 +231,26 @@ export default function Page() {
                 <IconClock size={16} />
                 <Text fw={500}>Operating Hours</Text>
               </Group>
-              <Text size="sm">
-                {getVenue.data?.open_time
-                  ? format(getVenue.data.open_time, "E")
-                  : "N/A"}{" "}
-                -{" "}
-                {getVenue.data?.close_time
-                  ? format(getVenue.data.close_time, "E")
-                  : "N/A"}
-                {": "}
-                {getVenue.data?.open_time
-                  ? format(getVenue.data.open_time, "HH:mm")
-                  : "N/A"}
-                -{" "}
-                {getVenue.data?.close_time
-                  ? format(getVenue.data.close_time, "HH:mm")
-                  : "N/A"}
-              </Text>
+              {getVenue.isPending ? (
+                <Group gap="xs">
+                  <Skeleton height={20} width={"100%"} maw={500} />
+                  <Skeleton height={20} width={"100%"} maw={500} />
+                  <Skeleton height={20} width={"100%"} maw={500} />
+                </Group>
+              ) : (
+                <Group gap="xs">
+                  {getVenue.data?.open_range.map((range, index) => (
+                    <Badge
+                      variant={range.is_open ? "light" : "light"}
+                      key={index}
+                      color={range.is_open ? "green" : "gray"}
+                    >
+                      {range.day} {format(range.open_time, "HH:mm")} -{" "}
+                      {format(range.close_time, "HH:mm")}
+                    </Badge>
+                  ))}
+                </Group>
+              )}
             </Stack>
           </Grid.Col>
         </Grid>
@@ -236,9 +261,6 @@ export default function Page() {
         <Group justify="space-between" mb="md">
           <div>
             <Title order={4}>Courts Management</Title>
-            <Text size="sm" c="dimmed">
-              {getVenue.data?.name}
-            </Text>
           </div>
           <Button
             leftSection={<IconPlus size={16} />}
@@ -338,8 +360,6 @@ export default function Page() {
               email: getVenue.data?.email ?? "",
               image_urls: getVenue.data?.image_urls ?? "",
               status: getVenue.data?.status ?? "",
-              open_time: format(getVenue.data?.open_time ?? "", "HH:mm"),
-              close_time: format(getVenue.data?.close_time ?? "", "HH:mm"),
             }}
           />
         )}
