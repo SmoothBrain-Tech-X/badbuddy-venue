@@ -19,6 +19,11 @@ export type TUpdateVenue = {
   open_range: Openrange[];
   image_urls: string;
   status: string;
+  facilities: Facilitie[];
+};
+
+export type Facilitie = {
+  id: string;
 };
 
 const updateVenue = async (props: TUpdateVenue) => {

@@ -15,6 +15,7 @@ interface RootObject {
   rating: number;
   total_reviews: number;
   courts: Court[];
+  facilities: Facility[];
 }
 
 interface Court {
@@ -30,6 +31,11 @@ interface Openrange {
   is_open: boolean;
   open_time: string;
   close_time: string;
+}
+
+interface Facility {
+  id: string;
+  name: string;
 }
 
 export type IGetVenue = {

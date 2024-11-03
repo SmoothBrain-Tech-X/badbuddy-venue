@@ -14,11 +14,17 @@ interface RootObject {
   play_hand: string;
   avatar_url: string;
   last_active_at: string;
+  role: string;
   hosted_sessions: number;
   joined_sessions: number;
   average_rating: number;
   total_reviews: number;
   regular_partners: number;
+  venues: Venue[];
+}
+
+interface Venue {
+  id: string;
 }
 
 export type IGetProfile = {};
