@@ -322,7 +322,7 @@ export default function Page() {
                           }
                           leftSection={<IconTrash size={14} />}
                         >
-                          Disable Court
+                          Delete Court
                         </Menu.Item>
                       </Menu.Dropdown>
                     </Menu>

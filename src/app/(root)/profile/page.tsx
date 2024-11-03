@@ -29,6 +29,7 @@ import {
   LoadingNotificationData,
   SuccessNotificationData,
 } from "@/configs/NotificationData/NotificationData";
+import BackButton from "@/app/_components/BackButton/BackButton";
 
 const ProfileManagement = () => {
   const getProfile = useGetProfile();
@@ -163,6 +164,7 @@ const ProfileManagement = () => {
 
   return (
     <Container fluid>
+      <BackButton />
       <Stack>
         {/* Header */}
         <Paper p="md" withBorder>
