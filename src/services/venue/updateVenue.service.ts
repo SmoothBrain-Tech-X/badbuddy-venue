@@ -20,11 +20,16 @@ export type TUpdateVenue = {
   image_urls: string;
   status: string;
   facilities: Facilitie[];
+  rules: Rule[];
 };
 
 export type Facilitie = {
   id: string;
 };
+
+interface Rule {
+  rule: string;
+}
 
 const updateVenue = async (props: TUpdateVenue) => {
   try {

@@ -25,6 +25,11 @@ export const venueSchema = z.object({
       }),
     )
     .min(1),
+  rules: z.array(
+    z.object({
+      rule: z.string().min(1),
+    }),
+  ),
   status: z.string().optional(),
 });
 

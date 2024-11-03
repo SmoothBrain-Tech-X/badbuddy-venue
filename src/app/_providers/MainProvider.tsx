@@ -25,7 +25,6 @@ export default function MainProvider({ children }: Props) {
         <Notifications position="top-right" />
         <ModalsProvider>{children}</ModalsProvider>
       </MantineProvider>
-      ;
     </SessionProvider>
   );
 }

@@ -25,6 +25,8 @@ import {
   IconClock,
   IconDotsVertical,
   IconTrash,
+  IconHome,
+  IconTools,
 } from "@tabler/icons-react";
 import { format } from "date-fns";
 import useGetVenue from "@/hooks/venue/useGetVenue";
@@ -212,7 +214,6 @@ export default function Page() {
             Edit Details
           </Button>
         </Group>
-
         <Grid>
           <Grid.Col span={6}>
             <Stack gap="xs">
@@ -229,7 +230,7 @@ export default function Page() {
               </Stack>
               <Stack gap="xs">
                 <Group gap="xs">
-                  <IconMapPin size={16} />
+                  <IconTools size={16} />
                   <Text fw={500}>Facilities</Text>
                 </Group>
                 {getVenue.isPending ? (
@@ -383,6 +384,7 @@ export default function Page() {
               image_urls: getVenue.data?.image_urls ?? "",
               status: getVenue.data?.status ?? "",
               facilities: getVenue.data?.facilities ?? [],
+              rules: getVenue.data?.rules ?? [],
             }}
           />
         )}

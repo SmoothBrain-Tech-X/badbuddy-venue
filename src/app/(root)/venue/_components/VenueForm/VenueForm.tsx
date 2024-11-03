@@ -40,6 +40,7 @@ export default function VenueForm(props: Props) {
     control,
     name: "open_range",
   });
+
   const {
     fields: facilitieFields,
     append: facilitieAppend,
@@ -47,6 +48,15 @@ export default function VenueForm(props: Props) {
   } = useFieldArray({
     control,
     name: "facilities",
+  });
+
+  const {
+    fields: ruleFields,
+    append: ruleAppend,
+    remove: ruleRemove,
+  } = useFieldArray({
+    control,
+    name: "rules",
   });
 
   const onFinish = (data: VenueSchemaType) => {
@@ -67,6 +77,7 @@ export default function VenueForm(props: Props) {
       setValue("location", props.data.location);
       setValue("status", props.data.status);
       setValue("facilities", props.data.facilities);
+      setValue("rules", props.data.rules);
     }
   }, [props.data, setValue]);
 
@@ -220,6 +231,40 @@ export default function VenueForm(props: Props) {
               is_open: false,
               open_time: new Date().toISOString(),
               close_time: new Date().toISOString(),
+            })
+          }
+        >
+          <IconPlus />
+        </ActionIcon>
+      </div>
+      <Divider my={5} />
+      <div className="flex flex-col gap-2">
+        <InputLabel>Rules</InputLabel>
+        {ruleFields.map((field, index) => (
+          <div className="flex items-baseline gap-3" key={field.id}>
+            <ControlledInputText
+              control={control}
+              name={`rules.${index}.rule`}
+              props={{
+                placeholder: "Rule",
+                withAsterisk: true,
+              }}
+            />
+            <div className="translate-y-[6px]">
+              <ActionIcon
+                onClick={() => ruleRemove(index)}
+                color="red"
+                variant="subtle"
+              >
+                <IconTrash />
+              </ActionIcon>
+            </div>
+          </div>
+        ))}
+        <ActionIcon
+          onClick={() =>
+            ruleAppend({
+              rule: "",
             })
           }
         >
