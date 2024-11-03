@@ -9,5 +9,12 @@ export const ConfirmDeleteModalData: OpenConfirmModal = {
   },
   confirmProps: {
     color: "red",
-  }
+  },
+};
+
+export const BaseModalData: OpenConfirmModal = {
+  labels: {
+    confirm: "Confirm",
+    cancel: "Cancel",
+  },
 };
