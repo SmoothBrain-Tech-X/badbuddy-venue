@@ -1,6 +1,6 @@
 "use client";
 import useGetProfile from "@/hooks/profile/useGetProfile";
-import { ActionIcon, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Text, TextInput } from "@mantine/core";
 import { Table } from "antd";
 import { IconEye, IconSearch } from "@tabler/icons-react";
 import Link from "next/link";
@@ -24,13 +24,10 @@ export default function Page() {
       <Text size="xl" fw={700}>
         My Venues
       </Text>
-      <div className="flex items-center justify-between">
-        <TextInput
-          placeholder="Search venues"
-          leftSection={<IconSearch size={16} />}
-          value={keyWord}
-          onChange={(e) => setKeyWord(e.currentTarget.value)}
-        />
+      <div className="flex justify-end">
+        <Link href={"/venue/create"}>
+          <Button>Create Venue</Button>
+        </Link>
       </div>
       <Table
         bordered

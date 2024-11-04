@@ -1,8 +1,7 @@
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  return (
-    <div>Page</div>
-  )
+export default async function Page() {
+  redirect("/venue");
 }
 
 export const dynamic = "force-dynamic";
