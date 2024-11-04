@@ -32,6 +32,7 @@ export const authConfig = {
         email: { label: "Email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials) {
         try {
           const res = await login({
