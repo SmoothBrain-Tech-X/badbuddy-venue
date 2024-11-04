@@ -50,6 +50,7 @@ import { modals } from "@mantine/modals";
 import { ConfirmDeleteModalData } from "@/configs/ModalData/ModalData";
 import { useParams } from "next/navigation";
 import BackButton from "@/app/_components/BackButton/BackButton";
+import { getVenueStatusMap } from "utils/VenueStatusMap";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -203,7 +204,15 @@ export default function Page() {
             {getVenue.isPending ? (
               <Skeleton height={20} width={300} />
             ) : (
-              <Title order={4}>{getVenue.data?.name}</Title>
+              <Group gap="xs">
+                <Title order={4}>{getVenue.data?.name}</Title>
+                <Badge
+                  variant="light"
+                  color={getVenueStatusMap(getVenue.data?.status ?? "")?.color}
+                >
+                  {getVenueStatusMap(getVenue.data?.status ?? "")?.label}
+                </Badge>
+              </Group>
             )}
           </div>
           <Button

@@ -11,6 +11,8 @@ import {
   Grid,
   Button,
   Tabs,
+  LoadingOverlay,
+  Box,
 } from "@mantine/core";
 import { IconBuildingStore } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
@@ -177,27 +179,35 @@ const ProfileManagement = () => {
               onClick={() => {
                 void handleSubmit(onEdit)();
               }}
+              loading={updateProfile.isPending}
+              disabled={getProfile.isLoading}
             >
               Save Changes
             </Button>
           </Group>
         </Paper>
+        <Box pos="relative">
+          <LoadingOverlay
+            visible={getProfile.isLoading || getProfile.isFetching}
+            zIndex={1000}
+            overlayProps={{ radius: "sm", blur: 2 }}
+          />
+          {/* Main Content */}
+          <Tabs defaultValue="general">
+            <Tabs.List>
+              <Tabs.Tab
+                value="general"
+                leftSection={<IconBuildingStore size={16} />}
+              >
+                General
+              </Tabs.Tab>
+            </Tabs.List>
 
-        {/* Main Content */}
-        <Tabs defaultValue="general">
-          <Tabs.List>
-            <Tabs.Tab
-              value="general"
-              leftSection={<IconBuildingStore size={16} />}
-            >
-              General
-            </Tabs.Tab>
-          </Tabs.List>
-
-          <Tabs.Panel value="general" pt="md">
-            {renderGeneralSettings()}
-          </Tabs.Panel>
-        </Tabs>
+            <Tabs.Panel value="general" pt="md">
+              {renderGeneralSettings()}
+            </Tabs.Panel>
+          </Tabs>
+        </Box>
       </Stack>
     </Container>
   );
