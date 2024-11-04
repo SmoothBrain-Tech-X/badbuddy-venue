@@ -39,6 +39,11 @@ export const authConfig = {
             email: credentials.email! as string,
             password: credentials.password! as string,
           });
+
+          if (res.user.role !== "venue") {
+            throw new Error("Invalid role");
+          }
+
           return {
             access_token: res.access_token,
             email: res.user.email,
